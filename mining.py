@@ -18,7 +18,7 @@ stock_data = []
 monthly_averages = []
 year_list = []
 month_list = []
-
+month_tuple = ()
 def read_stock_data(stock_name, stock_file_name):
    stock_data = read_json_from_file(stock_file_name)
    for item in stock_data:
@@ -35,6 +35,7 @@ def read_stock_data(stock_name, stock_file_name):
            month_average = 0
            product = 0
            sum_of_volumes = 0
+           month_tuple = ()
            for item in stock_data:
                item_date = datetime.datetime.strptime(item["Date"], "%Y-%m-%d")
                item_year = item_date.year
@@ -45,7 +46,12 @@ def read_stock_data(stock_name, stock_file_name):
                        sum_of_volumes += item["Volume"]
            if sum_of_volumes != 0:
                month_average = product/ sum_of_volumes
-               print(year_value, "-", month_value, ":", month_average)
+               month_average = round(month_average,2)
+               year_month = str(year_value) + "/" + str(month_value)
+               month_tuple = (year_month,month_average)
+               monthly_averages.append(month_tuple)
+               print(month_tuple)
+   print(monthly_averages)
 
 
 
