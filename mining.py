@@ -13,6 +13,7 @@ __status__ = "Prototype"
 import json
 import datetime
 import operator
+import matplotlib.pyplot as plt
 
 stock_data = []
 monthly_averages = []
@@ -29,11 +30,8 @@ def read_stock_data(stock_name, stock_file_name):
             year_list.append(date.year)
         if date.month not in month_list:
             month_list.append(date.month)
-    print(year_list)
-    print(month_list)
     for year_value in year_list:
             for month_value in month_list:
-                month_average = 0
                 product = 0
                 sum_of_volumes = 0
                 for item in stock_data:
@@ -71,4 +69,38 @@ def read_json_from_file(file_name):
         file_contents = file_handle.read()
 
     return json.loads(file_contents)
+
+
+def visualize(stock_name):
+    six_best = six_best_months()
+    six_worst = six_worst_months()
+    print(six_best)
+    print(six_worst)
+
+    for i in range(len(six_best)):
+        a, b = six_best[i]
+        some_date = datetime.datetime.strptime(a, '%Y/%m')
+        x_series = some_date
+        y_series = b
+        print(x_series, y_series)
+        plt.bar(some_date, b, align='center', width=10.0, color='green')
+    plt.xticks(rotation=15)
+    plt.title("Six Best Months for %s" % stock_name, fontsize=16)
+    plt.xlabel("Time", fontsize=14)
+    plt.ylabel("Average Monthly Price", fontsize=14)
+    plt.savefig('Six_Best_Months_%s.png' % stock_name)
+    plt.show()
+    for i in range(len(six_worst)):
+        c, d = six_worst[i]
+        any_date = datetime.datetime.strptime(c, '%Y/%m')
+        x_series = any_date
+        y_series = d
+        print(x_series, y_series)
+        plt.bar(any_date, d, align='center', width=10.0, color='purple')
+    plt.xticks(rotation=15)
+    plt.title("Six Worst Months for %s" % stock_name, fontsize=16)
+    plt.xlabel("Time", fontsize=14)
+    plt.ylabel("Average Monthly Price", fontsize=14)
+    plt.savefig('Six_Worst_Months_%s.png' % stock_name)
+    plt.show()
 
