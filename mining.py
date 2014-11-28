@@ -14,6 +14,7 @@ import json
 import datetime
 import operator
 import matplotlib.pyplot as plt
+import tkinter
 
 stock_data = []
 monthly_averages = []
@@ -44,7 +45,7 @@ def read_stock_data(stock_name, stock_file_name):
                             sum_of_volumes += item["Volume"]
                 if sum_of_volumes != 0:
                         month_average = product/ sum_of_volumes
-                        month_average = round(month_average,2)
+                        month_average = round(month_average, 2)
                         month_value = '{0:0=2d}'.format(month_value)
                         year_month = str(year_value) + "/" + str(month_value)
                         month_tuple = (year_month,month_average)
@@ -104,3 +105,62 @@ def visualize(stock_name):
     plt.savefig('Six_Worst_Months_%s.png' % stock_name)
     plt.show()
 
+
+def gui_function():
+
+    def invoke_function(event):
+        stock_name = entry.get()
+        if stock_name in ["GOOG", "goog"]:
+            read_stock_data("GOOG", "data/GOOG.json")
+            var1 = tkinter.StringVar()
+            var1.set("Calculation of average stock price(monthly) for GOOG Json file Successful! You can proceed!")
+            message = tkinter.Message(window, textvariable=var1, bg='green', fg='white')
+            message.pack()
+        else:
+            read_stock_data("TSE-SO", "data/TSE-SO.json")
+            var1 = tkinter.StringVar()
+            var1.set("Calculation of average stock price(monthly) for TSE-SO Json file Successful! You can proceed!")
+            message = tkinter.Message(window, textvariable=var1, bg='green', fg='white')
+            message.pack()
+
+    def display_best(event):
+        six_best_months()
+        var = tkinter.StringVar()
+        var.set(monthly_averages[0:6])
+        frame1 = tkinter.Frame(window)
+        frame1.pack()
+        best_six_label = tkinter.Label(frame1, text='Best six months:')
+        best_six_label.pack()
+        display_message = tkinter.Message(frame1, textvariable=var, bg='blue', fg='white')
+        display_message.pack()
+
+    def display_worst(event):
+        six_worst_months()
+        var = tkinter.StringVar()
+        var.set(monthly_averages[0:6])
+        frame2 = tkinter.Frame(window)
+        frame2.pack()
+        worst_six_label = tkinter.Label(frame2, text='Worst six months:')
+        worst_six_label.pack()
+        display_message = tkinter.Message(frame2, textvariable=var, bg='red', fg='white')
+        display_message.pack()
+
+    window = tkinter.Tk()
+    window.title('Assignment-3:Data Mining')
+    frame = tkinter.Frame(window)
+    frame.pack()
+    heading = tkinter.Label(frame, text='AVERAGE STOCK PRICE CALCULATION', fg='magenta')
+    heading.pack()
+    label = tkinter.Label(frame, text='Enter stock name(GOOG/TSE-SO) and press Enter:')
+    label.pack()
+    entry = tkinter.Entry(frame)
+    entry.bind('<Return>', invoke_function)
+    entry.pack()
+    button1 = tkinter.Button(frame, text='Best Six Months', bg='blue', fg='white')
+    button1.bind('<Button>', display_best)
+    button1.pack()
+    button2 = tkinter.Button(frame, text='Worst Six Months', bg='red', fg='white')
+    button2.bind('<Button>', display_worst)
+    button2.pack()
+
+    window.mainloop()

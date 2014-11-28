@@ -32,3 +32,5 @@ def test_tse_so():
     visualize("TSE-SO")
 
 
+def test_gui():
+    gui_function()
