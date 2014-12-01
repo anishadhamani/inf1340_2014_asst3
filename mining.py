@@ -254,8 +254,8 @@ def stock_comparison():
             monthly_averages_list.append(item[1])
         standard_deviation_stock = statistics.stdev(monthly_averages_list)
         return standard_deviation_stock
-    sd1 = calculate_standard_deviation("GOOG", "GOOG.json")
-    sd2 = calculate_standard_deviation("TSE-SO", "TSE-SO.json")
+    sd1 = calculate_standard_deviation("GOOG", "data/GOOG.json")
+    sd2 = calculate_standard_deviation("TSE-SO", "data/TSE-SO.json")
     if sd1 > sd2:
         return "GOOG"
     else:
