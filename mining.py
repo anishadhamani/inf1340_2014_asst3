@@ -156,11 +156,16 @@ def visualize(stock_name):
 
 def gui_function():
     """
-
+    Creates a GUI for the average stock price program.
     :return: none
     """
 
     def invoke_function(event):
+        """
+        Handles user input and calculates the average monthly stock price for input file.
+        :param event: Gets the keyboard input event.
+        :return: none
+        """
         stock_name = entry.get()
         if stock_name in ["GOOG", "goog"]:
             read_stock_data("GOOG", "data/GOOG.json")
@@ -168,7 +173,7 @@ def gui_function():
             var1.set("Calculation of average stock price(monthly) for GOOG Json file Successful! You can proceed!")
             message = tkinter.Message(window, textvariable=var1, bg='green', fg='white')
             message.pack()
-        elif stock_name == "TSE-SO":
+        elif stock_name in ["TSE-SO", "tse-so"]:
             read_stock_data("TSE-SO", "data/TSE-SO.json")
             var1 = tkinter.StringVar()
             var1.set("Calculation of average stock price(monthly) for TSE-SO Json file Successful! You can proceed!")
@@ -181,6 +186,11 @@ def gui_function():
             message.pack()
 
     def display_best(event):
+        """
+        Displays the best six months of stock price for the given file in the GUI.
+        :param event: Gets the button click event.
+        :return: none
+        """
         six_best_months()
         var = tkinter.StringVar()
         var.set(monthly_averages[0:6])
@@ -192,6 +202,11 @@ def gui_function():
         display_message.pack()
 
     def display_worst(event):
+        """
+        Displays the worst six months of stock price for the given file in the GUI
+        :param event: Gets the button click event.
+        :return: none
+        """
         six_worst_months()
         var = tkinter.StringVar()
         var.set(monthly_averages[0:6])
@@ -201,7 +216,7 @@ def gui_function():
         worst_six_label.pack()
         display_message = tkinter.Message(frame2, textvariable=var, bg='red', fg='white')
         display_message.pack()
-
+    # Creates the components of the GUI.
     window = tkinter.Tk()
     window.title('Assignment-3:Data Mining')
     frame = tkinter.Frame(window)
@@ -222,13 +237,23 @@ def gui_function():
     window.mainloop()
 
 def stock_comparison():
+    """
+    Compares the standard deviation of average stock price of two files.
+    :return: string, name of the file with highest standard deviation of stock prices.
+    """
     def calculate_standard_deviation(file_name, file):
-            read_stock_data(file_name, file)
-            monthly_averages_list = []
-            for item in monthly_averages:
-                monthly_averages_list.append(item[1])
-            standard_deviation_stock = statistics.stdev(monthly_averages_list)
-            return standard_deviation_stock
+        """
+        Calculates the standard deviation of average stock prices for the given file.
+        :param file_name: string, possible values : 'GOOG' or 'TSE-SO'
+        :param file: The name of a JSON formatted file that contains stock data
+        :return: number, standard deviation of data in given file
+        """
+        read_stock_data(file_name, file)
+        monthly_averages_list = []
+        for item in monthly_averages:
+            monthly_averages_list.append(item[1])
+        standard_deviation_stock = statistics.stdev(monthly_averages_list)
+        return standard_deviation_stock
     sd1 = calculate_standard_deviation("GOOG", "GOOG.json")
     sd2 = calculate_standard_deviation("TSE-SO", "TSE-SO.json")
     if sd1 > sd2:
