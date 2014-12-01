@@ -236,6 +236,7 @@ def gui_function():
     button2.pack()
     window.mainloop()
 
+
 def stock_comparison():
     """
     Compares the standard deviation of average stock price of two files.
