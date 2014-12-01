@@ -14,6 +14,8 @@ matplotlib.use('TKAgg')
 import matplotlib.pyplot as plt
 # Package for GUI
 import tkinter
+# Package for Comparison
+import statistics
 
 #global variables
 stock_data = []
@@ -219,3 +221,17 @@ def gui_function():
     button2.pack()
     window.mainloop()
 
+def stock_comparison():
+    def calculate_standard_deviation(file_name, file):
+            read_stock_data(file_name, file)
+            monthly_averages_list = []
+            for item in monthly_averages:
+                monthly_averages_list.append(item[1])
+            standard_deviation_stock = statistics.stdev(monthly_averages_list)
+            return standard_deviation_stock
+    sd1 = calculate_standard_deviation("GOOG", "GOOG.json")
+    sd2 = calculate_standard_deviation("TSE-SO", "TSE-SO.json")
+    if sd1 > sd2:
+        return "GOOG"
+    else:
+        return "TSE-SO"

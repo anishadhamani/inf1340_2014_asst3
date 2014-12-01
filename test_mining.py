@@ -40,6 +40,8 @@ def test_gui():
     # test for graphical user interface
     gui_function()
 
+def test_comparison():
+    assert stock_comparison() == "GOOG"
 
 def test_files():
     # file not found test cases
